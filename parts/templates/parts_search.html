@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<title>ZP4 - результат пошуку</title>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-3">
+          {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <h3>{{ message }}</h3>
+              {% endfor %}
+          </ul>
+          {% endif %}
+          <form action="{% url 'parts:part_search' %}">
+            <div class="form-group">
+              <label for="partnumberimput">Пошук</label>
+              <input type="text" class="form-control" id="partnumberimput" placeholder="Номер запчастини" name='partnumber' required>
+              <small id="emailHelp" class="form-text text-muted">Введіть номер запчастини яку ви шукаєте</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Шукати</button>
+          </form>
+          <table class="table table-hover">
+            <thead> 
+              <h3>оригінал</h3>
+              <tr>
+                <th scope="col">фото</th>
+                <th scope="col">Найменування</th>
+                <th scope="col">Категорія</th>
+                <th scope="col">Опис</th>
+                <th scope="col">Оригінал</th>
+                <th scope="col">Кросс</th>
+                <th scope="col">Доставка</th>
+                <th scope="col">Ціна</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">
+                  {% if part.odd_images.count > 0 %}
+                  {% for image in part.odd_images.all %}
+                    {% if forloop.counter == 1 %}
+                    <img  src="{{ image.image.url }}" height="68px">
+                    {% else %}
+                    {% endif %}
+                    {% endfor %}
+                  {% else %}
+                  no odd_images
+                  {% endif %}
+                </th>
+                <th scope="row"><a href="{{ part.id }}">{{ part.title }}</a></th>
+                <td>{{ part.category }}</td>
+                <td>{{ part.description }}</td>
+                <td>{{ part.original }}</td>
+                <td>{{ part.cross }}</td>
+                <td>{{ part.shipping }}</td>
+                <th scope="row">{{ part.price }}</th>
+            </tr>    
+            </tbody>
+          </table>
+            <table class="table table-hover">
+                <thead>
+                  <h3>кросс</h3>
+                  <tr>
+                    <th scope="col">фото</th>
+                    <th scope="col">Найменування</th>
+                    <th scope="col">Категорія</th>
+                    <th scope="col">Опис</th>
+                    <th scope="col">Оригінал</th>
+                    <th scope="col">Кросс</th>
+                    <th scope="col">Доставка</th>
+                    <th scope="col">Ціна</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for part in parts_cross %}
+                <tr>
+                    <th scope="row">
+                      {% if part.odd_images.count > 0 %}
+                      {% for image in part.odd_images.all %}
+                        {% if forloop.counter == 1 %}
+                        <img  src="{{ image.image.url }}" height="68px">
+                        {% else %}
+                        {% endif %}
+                        {% endfor %}
+                      {% else %}
+                      no odd_images
+                      {% endif %}
+                    </th>
+                    <th scope="row"><a href="{{ part.id }}">{{ part.title }}</a></th>
+                    <td>{{ part.category }}</td>
+                    <td>{{ part.description }}</td>
+                    <td>{{ part.original }}</td>
+                    <td>{{ part.cross }}</td>
+                    <td>{{ part.shipping }}</td>
+                    <th scope="row">{{ part.price }}</th>
+                </tr>
+            
+                {% endfor %}      
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

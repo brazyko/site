@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<title>ZP4 - admin's</title>
+
+admin page users<br>    
+
+{% for user in all_users %}
+    {{user.username}}
+{% endfor %}
+{% endblock %}

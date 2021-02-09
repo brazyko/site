@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<title>ZP4 - Головна</title>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-3">
+            <form action="{% url 'parts:part_search' %}">
+              <div class="form-group">
+                <label for="partnumberimput">Пошук</label>
+                <input type="text" class="form-control" id="partnumberimput" placeholder="Номер запчастини" name='partnumber' required>
+                <small id="emailHelp" class="form-text text-muted">Введіть номер запчастини яку ви шукаєте</small>
+              </div>
+              <button type="submit" class="btn btn-primary">Шукати</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
