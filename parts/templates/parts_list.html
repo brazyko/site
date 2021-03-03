@@ -5,11 +5,11 @@
 <title>ZP4</title>
 <div class="container">
     <div class="row">
-      <div class="col-lg-2 mt-3 border">
-        <h5>
-           <a href="{% url 'shopping_cart:order_summary' %}">Корзина:{{my_order.items.count}}</a>
-        </h5>
-    </div>
+      {% if user.is_authenticated %}
+        <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-lg btn-outline-secondary mt-2">Корзина:{{my_order.items.count}}</a>
+      {% else %}
+        <a href = '{% url "users:login" %}' class="btn btn-lg btn-outline-secondary mt-2">Корзина:0</a>
+      {% endif %}  
         <div class="col-lg-12 mt-3">
             <form action="{% url 'parts:part_search' %}">
               <div class="form-group">
@@ -41,18 +41,23 @@
                     <td>{{ part.instock }} од.</td>
                     <td scope="row">{{ part.price }}</td>
                     <th>
-                      {% if part in ordered_items %}
-                      <a class="btn btn-success">В корзині</a>
+                      {% if user.is_authenticated %}
+                        {% if part in ordered_items %}
+                        <a class="btn btn-success">В корзині</a>
+                        {% else %}
+                        <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
+                          <div class='mt-3'>
+                              <input type="number" name='quantity' id='quantity' min="1" value='1' style="width: 50px;" max='{{ part.instock }}'>
+                          </div>
+                          <div class="mt-3">
+                              <button class="btn btn-warning">В корзину</button>
+                          </div>
+                        </form>
+                        {% endif %}
                       {% else %}
-                      <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
-                        <div class='mt-3'>
-                            <input type="number" name='quantity' id='quantity' min="1" value='1' style="width: 50px;" max='{{ part.instock }}'>
-                        </div>
-                        <div class="mt-3">
-                            <button class="btn btn-warning">В корзину</button>
-                        </div>
-                      </form>
+                      <a class="btn btn-warning" href = '{% url "users:login" %}'>В корзину</a>
                       {% endif %}
+                      
                     </th>
                     </tr>
                 {% endfor %}      

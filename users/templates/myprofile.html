@@ -1,16 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %} 
-<title>{{ user.username }}'s profile</title>
+<title>Профіль користувача {{ user.username }}</title>
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 mt-3 border">
-            {{user.username}}
-            <div class="table-responsive">
-                    {% for order in my_orders%}
+        <div class="col-lg-12 col-12 col-sm-12 col-md-12 mt-3 border">
+            {% if user.is_superuser %}   
+            <a href="{% url 'admintools:admintools' %}">
+                На сторінку адміністратора
+            </a>
+            {% endif %}
+            
+            <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-lg btn-outline-secondary mt-2">Корзина:{{ items_in_cart }}</a>
+                
+            <h3>
+                Мої замовлення
+            </h3>
+            {% for order in my_orders %}
+            <div class="table-responsive ">
                 <table class="table table-bordered">
                     <thead>
-                        Замовлення № {{order.ref_code}}
+                        Замовлення № {{order.ref_code}}  - {{order.order_status}}
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Виробник</th>
@@ -25,7 +35,7 @@
                     {% for part in order.items.all%}
                         <tr>
                             <th scope="row">{{ forloop.counter}}</th>
-                            <th scope="row">{{ part.part.producer }}</th>
+                            <td scope="row">{{ part.part.producer }}</td>
                             <td><a href="{{ part.id }}">{{ part.part.index }}</a></td>
                             <td>{{ part.part.description }}</td>
                             <td>{{ part.part.original }}</td>
@@ -33,13 +43,22 @@
                             <td scope="row">{{ part.quantity }}</td>
                         </tr>
                     {% endfor %}  
+                    <tr>
+                        <th colspan="5" >
+                            Загально
+                        </th>
+                        <th>
+                            {{order.get_cart_items_total}}
+                        </th>
+                        <th>
+                            {{order.get_cart_items}}
+                        </th>
+                    </tr> 
                     </tbody>
                 </table>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
-
 {% endblock %}

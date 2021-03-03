@@ -2,7 +2,7 @@
 
 {% block content %}
 <title>ZP4 - корзина</title>
- <section>
+ <div class='container'>
    <h1>
      Корзина
    </h1>
@@ -16,7 +16,7 @@
         <th>Ціна</th>
         <th>Вилучити</th>
       </tr>
-      {% for item in order.get_cart_items %}
+      {% for item in order.items.all %}
         <tr>
           <td>
             {{ forloop.counter }}
@@ -25,7 +25,7 @@
             {{ item.part.original }}
           </td>
           <td>
-            {{ item.part.title }}
+            {{ item.part.description }}
           </td>
           <td>
             {{ item.quantity }}
@@ -66,14 +66,14 @@
         </td>
         <td colspan=3>
           {% if order.get_cart_items %}
-            <a href="#" class="pull-right btn btn-primary">Перейти до оформлення</a>
+            <a href="{% url 'shopping_cart:shipping-info' %}" class="pull-right btn btn-primary">Перейти до оформлення</a>
           {% endif %}
         </td>
       </tr>
     </table>
      
    </div>
- </section>
+  </div>
 {% endblock %}
 
 {% block scripts %}

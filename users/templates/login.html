@@ -3,16 +3,18 @@
 {% block content %}      
 
 {% load crispy_forms_tags %}
-<title>Login</title>
+<title>Zp4 - Ввійти у акаунт</title>
 <!--Login--> 
 <div class="container py-5">
-  <h1>Login</h1>
+  <h1>Вхід</h1>
   <form method="POST">
     {% csrf_token %}
-    {{ login_form|crispy }}
-    <button class="btn btn-primary" type="submit">Login</button>
+    {% for field in login_form %}
+    {{ field|as_crispy_field  }}
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Ввійти</button>
   </form>
-  <p class="text-center">Don't have an account? <a href="{% url 'users:register' %}">Create an account</a>.</p>
+  <p class="text-center">Ще не маєте акаунту? <a href="{% url 'users:register' %}">Створіть!</a></p>
 </div>
 
 {% endblock %}

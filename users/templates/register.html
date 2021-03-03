@@ -5,15 +5,15 @@
 {% load crispy_forms_tags %}         
 
 <!--Register--> 
-<title>Register</title>
+<title>ZP4 - реєсрація</title>
 <div class="container py-5">
-	<h1>Register</h1>
+	<h1>Реєстрація</h1>
 	<form method="POST">
 		{% csrf_token %}
 		{{ register_form|crispy }}                    
-		<button class="btn btn-primary" type="submit">Register</button>
+		<button class="btn btn-primary" type="submit">Зареєструватися</button>
 	</form>
-	<p class="text-center">If you already have an account, <a href="{% url 'users:login' %}">login</a> instead.</p>
+	<p class="text-center">Якщо Ви вже маєте обліковий засіб <a href="{% url 'users:login' %}">увійдіть</a> натомість.</p>
 </div>
 
 {% endblock %}

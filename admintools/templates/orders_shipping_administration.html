@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<title>ZP4 - admin's</title>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-3 border">
+            {% for order_shipp in orders_shipping_data %}
+            <div class="table-responsive border mb-4">
+                <table class="table table-secondary  table-hover  ">
+                    <thead>
+                        <tr>
+                            <th scope="col" colspan="2">REf: {{ order_shipp.order.ref_code }}</th>
+                            <th scope="col" colspan="1">Дата замовлення:<br> {{ order_shipp.order.date_ordered|date:'d-m-Y H:i'  }}</th>
+                            <th scope="col" colspan="1">Замовник: {{ order_shipp.order.owner.username }}</th>
+                            <th scope="col" colspan="1">Статус: {{ order_shipp.order.order_status }}</th>
+                        </tr>
+                    <tr>
+                        <th scope="col">Ім'я</th>
+                        <th scope="col">Прізвище</th>
+                        <th scope="col">Номер телефону</th>
+                        <th scope="col">Місто</th>
+                        <th scope="col">Відділ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td scope="row">{{ order_shipp.name }}</td>
+                        <td>{{ order_shipp.surname }}</td>
+                        <td>{{ order_shipp.phone_number }}</td>
+                        <td>{{ order_shipp.city }}</td>
+                        <td>{{ order_shipp.viddil }}</td>
+                    </tr>
+                    </tbody>
+            </table>
+            {% if order_shipp.order.order_status == 'PRP' %}
+            <a href="confirm-passed-to-ship-{{ order_shipp.order.ref_code }}" class='btn btn-success mb-3'>Підтвердити відправку</a>
+            {% else %}
+            {% endif %}
+        </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

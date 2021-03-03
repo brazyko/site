@@ -3,7 +3,23 @@
 
 {% block content %}
 <title>ZP4 - admin's</title>
-
-admin page
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 border">
+            <div class="mt-3">
+                Сторінка адміністратора
+            </div>
+            <div class="m-3">
+                <a href="{% url 'admintools:usermanagment' %}" class="btn btn-success">Керувати користувачами</a>
+            </div>
+            <div class="mt-3">
+                <a href="{% url 'admintools:orders_admin' %}" class="btn btn-success"> Керувати замовленнями</a>
+            </div>
+            <div class="m-3">
+                <a href="{% url 'admintools:orders_shipping_admin' %}" class="btn btn-success">Керувати доставкою замовлень</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<title>
+  ZP4 - оформлення
+</title>
+<div class="container">
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-3">
+        
+      </div>
+      <div class="col-6 mt-3">
+        <h5>
+          Введіть ваші дані
+        </h5>
+        {{form|crispy}}
+        <button type="submit" class="btn btn-success">Відправити</button>
+      </div>
+    </div>
+    
+  </form>
+</div>
+{% endblock %}

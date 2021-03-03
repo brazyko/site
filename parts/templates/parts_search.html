@@ -5,6 +5,7 @@
 <title>ZP4 - результат пошуку</title>
 <div class="container">
     <div class="row">
+      <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-lg btn-outline-secondary mt-2">Корзина:{{my_order.items.count}}</a>
         <div class="col-lg-12 mt-3">
           {% if messages %}
           <ul class="messages">
@@ -21,9 +22,11 @@
             </div>
             <button type="submit" class="btn btn-primary">Шукати</button>
           </form>
-          <table class="table table-hover">
-            <thead> 
-              <h3>оригінал</h3>
+          <table class="table table-hover ">
+            <h4>
+              Збіг по оригіналу
+            </h4>
+            <thead>
               <tr>
                 <th scope="col">Виробник</th>
                 <th scope="col">index</th>
@@ -35,17 +38,18 @@
               </tr>
             </thead>
             <tbody>
-              {% for part in parts %}
-              <tr>
+            {% for part in parts %}
+            <tr>
                 <th scope="row">{{ part.producer }}</th>
                 <td><a href="{{ part.id }}">{{ part.index }}</a></td>
                 <td>{{ part.description }}</td>
                 <td>{{ part.original }}</td>
                 <td>{{ part.instock }} од.</td>
                 <td scope="row">{{ part.price }}</td>
-                <td>
-                  {% if part in order_parts %}
-                    <button class="btn btn-success">В корзині</button>
+                <th>
+                  {% if user.is_authenticated %}
+                    {% if part in ordered_items %}
+                    <a class="btn btn-success">В корзині</a>
                     {% else %}
                     <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
                       <div class='mt-3'>
@@ -56,51 +60,63 @@
                       </div>
                     </form>
                     {% endif %}
-                </td>
-              </tr>
-              {% endfor %}   
+                  {% else %}
+                  <a class="btn btn-warning" href = '{% url "users:login" %}'>В корзину</a>
+                  {% endif %}
+                  
+                </th>
+                </tr>
+            {% endfor %}      
             </tbody>
           </table>
-            <table class="table table-hover">
-                <thead>
-                  <h3>кросс</h3>
-                  <tr>
-                      <th scope="col">Виробник</th>
-                      <th scope="col">index</th>
-                      <th scope="col">Опис</th>
-                      <th scope="col">Оригінал</th>
-                      <th scope="col">В наявності шт.</th>
-                      <th scope="col">Ціна</th>
-                      <th scope="col">Кількість</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for part in parts_cross %}
-                <tr>
-                  <th scope="row">{{ part.producer }}</th>
-                  <td><a href="{{ part.id }}">{{ part.index }}</a></td>
-                  <td>{{ part.description }}</td>
-                  <td>{{ part.original }}</td>
-                  <td>{{ part.instock }} од.</td>
-                  <td scope="row">{{ part.price }}</td>
-                  <td>
-                    {% if part in order_parts %}
-                      <button class="btn btn-success">В корзині</button>
-                      {% else %}
-                      <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
-                        <div class='mt-3'>
-                            <input type="number" name='quantity' id='quantity' min="1" value='1' style="width: 50px;" max='{{ part.instock }}'>
-                        </div>
-                        <div class="mt-3">
-                            <button class="btn btn-warning">В корзину</button>
-                        </div>
-                      </form>
-                      {% endif %}
-                  </td>
+          
+          <table class="table table-hover ">
+            <h4>
+              Збіг по кросу
+            </h4>
+            <thead>
+              <tr>
+                <th scope="col">Виробник</th>
+                <th scope="col">index</th>
+                <th scope="col">Опис</th>
+                <th scope="col">Оригінал</th>
+                <th scope="col">В наявності шт.</th>
+                <th scope="col">Ціна</th>
+                <th scope="col">Кількість</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for part in parts_cross %}
+            <tr>
+                <th scope="row">{{ part.producer }}</th>
+                <td><a href="{{ part.id }}">{{ part.index }}</a></td>
+                <td>{{ part.description }}</td>
+                <td>{{ part.original }}</td>
+                <td>{{ part.instock }} од.</td>
+                <td scope="row">{{ part.price }}</td>
+                <th>
+                  {% if user.is_authenticated %}
+                    {% if part in ordered_items %}
+                    <a class="btn btn-success">В корзині</a>
+                    {% else %}
+                    <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
+                      <div class='mt-3'>
+                          <input type="number" name='quantity' id='quantity' min="1" value='1' style="width: 50px;" max='{{ part.instock }}'>
+                      </div>
+                      <div class="mt-3">
+                          <button class="btn btn-warning">В корзину</button>
+                      </div>
+                    </form>
+                    {% endif %}
+                  {% else %}
+                  <a class="btn btn-warning" href = '{% url "users:login" %}'>В корзину</a>
+                  {% endif %}
+                  
+                </th>
                 </tr>
-                {% endfor %}      
-                </tbody>
-              </table>
+            {% endfor %}      
+            </tbody>
+          </table>
         </div>
     </div>
 </div>
