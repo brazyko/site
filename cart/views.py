@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from parts.models import Product,Product2
+from parts.models import Product
 from .models import *
 from users.models import *
 from .forms import ShippingForm
@@ -19,7 +19,7 @@ def get_user_pending_order(request):
 
 @login_required()
 def add_to_cart(request, **kwargs):
-    part = Product2.objects.filter(id = kwargs.get('item_id',"")).first()
+    part = Product.objects.filter(id = kwargs.get('item_id',"")).first()
     quantity = request.GET.get('quantity','')
     order_item, status = CartItem.objects.get_or_create(user=request.user,part = part,in_order = False)
     order_item.user = request.user

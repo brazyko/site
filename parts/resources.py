@@ -1,7 +1,7 @@
 from import_export import resources
-from .models import Product2
+from .models import Product
 
-class Product2Resource(resources.ModelResource):
+class ProductResource(resources.ModelResource):
 
     class Meta:
-        model = Product2
+        model = Product

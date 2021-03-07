@@ -53,7 +53,7 @@ def logout_user(request):
 def profile(request):
     user = request.user
     my_orders = Order.objects.filter(owner= request.user).exclude(order_status='INC')
-    items_in_cart = Order.objects.filter(owner= request.user).filter(order_status='INC').first().get_cart_items()
+    items_in_cart = Order.objects.filter(owner= request.user).filter(order_status='INC').first()
     context = {
         'user':user,
         "my_orders":my_orders,

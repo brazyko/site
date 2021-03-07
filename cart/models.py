@@ -1,13 +1,13 @@
 from django.db import models
 from users.models import Profile
-from parts.models import Product2
+from parts.models import Product
 from django.contrib.auth.models import User
 # Create your models here.
 from django.core.validators import RegexValidator
 
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
-    part = models.ForeignKey(Product2, on_delete= models.SET_NULL,null=True)
+    part = models.ForeignKey(Product, on_delete= models.SET_NULL,null=True)
     in_order = models.BooleanField(default=False)
     quantity = models.IntegerField(default=1)
 

@@ -43,7 +43,7 @@
                     <th>
                       {% if user.is_authenticated %}
                         {% if part in ordered_items %}
-                        <a class="btn btn-success">В корзині</a>
+                          <a class="btn btn-success">В корзині</a>
                         {% else %}
                         <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
                           <div class='mt-3'>

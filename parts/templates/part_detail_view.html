@@ -1,131 +1,68 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-
-<style>
-    .partcont{
-        display: grid;
-        grid-template-areas:
-            "title title title"
-			"pict pict side"
-			"partdata partdata partdata"; 
-    }
-    .title{
-        grid-area:title;
-    }
-    .pict{
-        grid-area:pict;
-    }
-    .side{
-        grid-area:side;
-    }
-    .partdata{
-        grid-area:partdata;
-    }
-    .slide{
-        width: 700px;
-        margin: 30px;
-    }
-    .slider-nav{
-        display: grid;
-        width: 100%;
-        grid-gap:10px;
-        justify-content: space-around;
-    }
-    .slick-prev:before {
-    color: #000;
-    }
-    .slick-next:before {
-    color: #000;
-    }
-</style>
-
+<title>
+    ZP4 - {{part.index}}
+</title>
 <div class="container">
-    <div class="row mt-3 border partcont">
-        <div class="border title">
-            <h2>
-                {{part.title}}
-            </h2>
+    <div class="row">
+        <div class="col-lg-3 border mt-3 p-2">
+        {% if user.is_authenticated %}
+            <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-lg btn-outline-secondary">Корзина:{{my_order.items.count}}</a>
+        {% else %}
+            <a href = '{% url "users:login" %}' class="btn btn-lg btn-outline-secondary mt-2">Корзина:0</a>
+        {% endif %} 
         </div>
-        <div class="border pict m-3">
-            <div class="slide">
-               {% for image in part.odd_images.all %}
-               <div>
-                    <img src="{{ image.image.url }}" alt="" width="100%">
-               </div>
-               {% endfor %}
-            </div>
-            <div class="slider-nav">
-                {% for image in part.odd_images.all %}
-               <div>
-                    <img src="{{ image.image.url }}" alt="" width="100px">
-               </div>
-               {% endfor %}
-            </div>
-        </div>
-        <div class="border side m-3"> 
-            <div class="m-2">
-                <div class="mt-2">
-                    <p class="h5">Ціна: {{part.price}} ГРН</p>
+        <div class="col-lg-9 border mt-3 p-2">
+            {% if part.instock == 0 %}
+                Немає в наявності
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" placeholder="Кілкість" aria-label="Кілкість" aria-describedby="button-addon2" disabled>
+                    <button class="btn btn-warning" type="button" id="button-addon2" disabled>В корзину</button>
                 </div>
-                <div class="mt-3">
-                    {%if part.shipping == True%}
-                    <p class="h6">Доставка товару почтою або видача в найближчому магазині </p>
+            {% else %}
+                В наявності: {{ part.instock }}
+                {% if user.is_authenticated %}
+                    {% if part in ordered_items %}
+                        <button class="btn btn-success w-100" type="button" id="button-addon2" disabled>Додано в корзину</button>
                     {% else %}
-                    Тільки видача в магазині
+                    <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
+                        <div class="input-group  mb-3">
+                            <input type="number" class="form-control" placeholder="Кілкість" aria-label="Кілкість" aria-describedby="button-addon2" name='quantity' id='quantity' min="1" value='1' max='{{ part.instock }}'>
+                            <button class="btn btn-warning" id="button-addon2">В корзину</button>
+                        </div>
+                      </form>
                     {% endif %}
-                </div>
-                <div class="mt-3">
-                    <p class="h6">Залишилося {{ part.instock }} од.</p>
-                </div>
-                <form action="{% url 'shopping_cart:add_to_cart' part.id %}">
-                    <div class='mt-3 quantity'>
-                        <input type="number" name='quantity' id='quantity' min="1" value='1'>
+                {% else %}
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" placeholder="Кілкість" aria-label="Кілкість" aria-describedby="button-addon2" min='1' max='{{ part.instock }}'>
+                        <a class="btn btn-warning" id="button-addon2" href = '{% url "users:login" %}'>В корзину</a>
                     </div>
-                    <div class="mt-3">
-                        <button class="btn btn-warning">В корзину</button>
-                    </div>
-                </form>
-            </div>
+                {% endif %}
+            {% endif %}
         </div>
-        <div class="border partdata">
-            <table class="table table-bordered">
+        <div class="col-lg-12 border mt-3 p-2">
+            <table class="table table-hover ">
                 <thead>
                   <tr>
-                    <th scope="col">original</th>
-                    <th scope="col">cross</th>
+                    <th scope="col">Виробник</th>
+                    <th scope="col">index</th>
+                    <th scope="col">Опис</th>
+                    <th scope="col">Оригінал</th>
+                    <th scope="col">Ціна</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">{{ part.original }}</th>
-                    <td>{{ part.cross }}</td>
-                  </tr>
+                <tr>
+                    <th scope="row">{{ part.producer }}</th>
+                    <td><a href="{{ part.id }}">{{ part.index }}</a></td>
+                    <td>{{ part.description }}</td>
+                    <td>{{ part.original }}</td>
+                    <td scope="row">{{ part.price }}</td>    
+                </tr>
                 </tbody>
               </table>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function(){
-        $('.slide').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: true,
-            fade: true,
-        });
-        $('.slider-nav').slick({
-            slidesToShow: '{{ part.odd_images.count }}',
-            width: '100px',
-            slidesToScroll: 1,
-            asNavFor: '.slide',
-            centerMode: true,
-            focusOnSelect: true
-        });
-    });
-</script>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 {% endblock %}
