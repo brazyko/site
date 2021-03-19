@@ -6,7 +6,8 @@ name = 'api'
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet),
-router.register('cart',CartViewSet),
+router.register(r'orders',OrderViewSet),
+router.register(r'parts',ProductViewSet),
 
 urlpatterns = [
     path('', include(router.urls)),

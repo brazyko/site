@@ -44,13 +44,13 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan= 3> You have not added any items yet.</td>
+          <td colspan= 6> Ви ще не добавили товар в корзину</td>
         </tr>
       {% endfor %}
       <tr>
         {% if order.get_cart_items_total != None %}
         <td colspan=3>
-          <strong class="pull-right">Order Total:</strong>
+          <strong class="pull-right">Загальна сума:</strong>
         </td>
         
         <td colspan=3>

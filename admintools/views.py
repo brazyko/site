@@ -65,6 +65,7 @@ class PartsManage(ListView):
     paginate_by = 40
     template_name = 'manage_parts.html'
 
+
 class CreatePart(CreateView):
     model = Product
     fields = ['producer','index','description','original','instock','price']
@@ -82,9 +83,9 @@ class DeletePart(DeleteView):
     	id = self.kwargs.get("id")
     	return get_object_or_404(Product,id=id)
 
-class UpdatePart(CreateView):
+class UpdatePart(UpdateView):
     model = Product
-    fields = ['producer','index','description','original','instock','price']
+    fields = "__all__"
     template_name = 'update.html'
 
     def get_object(self):

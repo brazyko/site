@@ -55,7 +55,7 @@
                 <tbody>
                 <tr>
                     <th scope="row">{{ part.producer }}</th>
-                    <td><a href="{{ part.id }}">{{ part.index }}</a></td>
+                    <td><a href="{% url 'parts:partdetail' part.id %}">{{ part.index }}</a></td>
                     <td>{{ part.description }}</td>
                     <td>{{ part.original }}</td>
                     <td scope="row">{{ part.price }}</td>    

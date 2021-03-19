@@ -6,12 +6,12 @@
     <div class="row">
         <div class="col-lg-12 col-12 col-sm-12 col-md-12 mt-3 border">
             {% if user.is_superuser %}   
-            <a href="{% url 'admintools:admintools' %}">
+            <a href="{% url 'admintools:admintools' %}" class="btn btn-lg btn-outline-success mt-2 w-100">
                 На сторінку адміністратора
             </a>
             {% endif %}
             
-            <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-lg btn-outline-secondary mt-2">Корзина:{{ items_in_cart }}</a>
+            <a href="{% url 'shopping_cart:order_summary' %}" class="btn btn-lg btn-outline-secondary mt-2">Корзина : {{ items_in_cart.items.count }} </a>
                 
             <h3>
                 Мої замовлення
@@ -36,7 +36,7 @@
                         <tr>
                             <th scope="row">{{ forloop.counter}}</th>
                             <td scope="row">{{ part.part.producer }}</td>
-                            <td><a href="{{ part.id }}">{{ part.part.index }}</a></td>
+                            <td><a href="{% url 'parts:partdetail' part.id %}">{{ part.part.index }}</a></td>
                             <td>{{ part.part.description }}</td>
                             <td>{{ part.part.original }}</td>
                             <td>{{ part.part.price }}</td>
